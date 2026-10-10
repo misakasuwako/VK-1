@@ -5,7 +5,20 @@ import importlib.util
 import json
 import os
 import tempfile
+import urllib.request
 from pathlib import Path
+
+def configure_egress(key):
+    # urllib prefers lowercase proxy variables inherited from the host. For
+    # protected credentials, use the Gateway proxy explicitly or fail closed.
+    if key.startswith("oc-sent-v2"):
+        protected_proxy = os.environ.get("HTTPS_PROXY", "")
+        if not protected_proxy:
+            raise RuntimeError("Protected credential egress is unavailable")
+        opener = urllib.request.build_opener(
+            urllib.request.ProxyHandler({"https": protected_proxy})
+        )
+        urllib.request.install_opener(opener)
 
 def sync(output):
     key = os.environ.get("DEEPSEEK_API_KEY", "")
@@ -14,6 +27,7 @@ def sync(output):
     spec = importlib.util.spec_from_file_location("vk1_balance", Path(__file__).with_name("balance-server.py"))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    configure_egress(key)
     data = module.fetch_balance(module.Session(key))
     key = ""
     if not data.get("ok") or data.get("stale"):

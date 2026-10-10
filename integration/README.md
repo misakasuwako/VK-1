@@ -1,4 +1,4 @@
-# VK-1 standalone dashboard pet (v0.1.0)
+# VK-1 standalone dashboard pet (v0.1.1)
 
 Independent web host for the MIT-licensed community VK-1 plugin. The original `dsh-plugin/` is unchanged; adaptation lives here as 37 audited exact-anchor build patches.
 
@@ -41,7 +41,7 @@ Reverse-proxy `/vk-1/api/` to loopback `127.0.0.1:18911`; preserve Host and forw
 
 Right-click/long-press → connect your own API key. It is kept in server memory for up to 12 hours; the Secure/HttpOnly/SameSite=Strict cookie is scoped to `/vk-1/api`. Deleting the session clears the override. Restart clears all browser sessions.
 
-For an operator-owned account, set `VK1_BALANCE_FILE` to a private sanitized JSON snapshot. Browser overrides take precedence; disconnect returns to the configured shared account. The bridge reads only balance/currency/timestamp and never the operator key. `balance-sync.py` can produce that file in a credential-aware execution environment; errors retain the previous file, which the bridge rejects after 5 minutes. With OpenClaw protected credentials, run it only through Gateway exec and the destination-bound secret egress proxy; `DEEPSEEK_API_KEY` remains a process-local opaque sentinel and is substituted only for `api.deepseek.com`. Do not print it, copy it into this repo, or disable TLS verification.
+For an operator-owned account, set `VK1_BALANCE_FILE` to a private sanitized JSON snapshot. Browser overrides take precedence; disconnect returns to the configured shared account. The bridge reads only balance/currency/timestamp and never the operator key. `balance-sync.py` can produce that file in a credential-aware execution environment; errors retain the previous file, which the bridge rejects after 5 minutes. With OpenClaw protected credentials, run it only through Gateway exec and the destination-bound secret egress proxy; `DEEPSEEK_API_KEY` remains a process-local opaque sentinel and is substituted only for `api.deepseek.com`. The worker explicitly selects Gateway `HTTPS_PROXY` for protected sentinels, so an inherited lowercase `https_proxy` cannot bypass credential substitution; a missing protected proxy fails closed. Do not print it, copy it into this repo, or disable TLS verification.
 
 Example zero-model automation payload (`balance-sync-job.example.js`) is portable; adjust its non-secret paths before registering it. A 30-second interval is sufficient; the front end polls the sanitized bridge, not the key store.
 

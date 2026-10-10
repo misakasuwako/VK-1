@@ -51,3 +51,9 @@
 ### Notes
 - `dsh-plugin/` remains unchanged at 1.0.2; standalone integration versioning is separate.
 - All generated assets preserve MIT attribution. No deployment credentials/logs are included.
+
+## Standalone integration v0.1.1 - 2026-10-10
+
+### Fixed
+- Select the protected Gateway HTTPS proxy explicitly when synchronizing a shared balance; inherited lowercase proxy variables no longer bypass credential substitution.
+- Add proxy-precedence and fail-closed regression checks. The original DSH plugin remains at its unchanged version.

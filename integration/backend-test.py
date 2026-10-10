@@ -111,4 +111,23 @@ class TestSharedBalance(unittest.TestCase):
         Path(mod.BALANCE_FILE).write_text("x"*65537)
         self.assertEqual(mod.shared_balance()["code"], "SOURCE")
 
+class TestProtectedEgress(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        spec = importlib.util.spec_from_file_location("vk1_sync", Path(__file__).with_name("balance-sync.py"))
+        cls.worker = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.worker)
+    def test_lowercase_proxy_does_not_override_protected_proxy(self):
+        protected = "http://127.0.0.1:43210"
+        with patch.dict(self.worker.os.environ, {"HTTPS_PROXY": protected, "https_proxy": "http://127.0.0.1:7890"}, clear=True):
+            with patch.object(urllib.request, "install_opener") as install:
+                self.worker.configure_egress("oc-sent-v2.test.end")
+                handlers = install.call_args.args[0].handlers
+                proxy = next(h for h in handlers if isinstance(h, urllib.request.ProxyHandler))
+                self.assertEqual(proxy.proxies, {"https": protected})
+    def test_missing_protected_proxy_fails_closed(self):
+        with patch.dict(self.worker.os.environ, {"https_proxy": "http://127.0.0.1:7890"}, clear=True):
+            with self.assertRaises(RuntimeError):
+                self.worker.configure_egress("oc-sent-v2.test.end")
+
 if __name__=="__main__":unittest.main()
