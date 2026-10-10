@@ -22,3 +22,16 @@ node_modules/
 *.jks
 id_rsa
 id_ed25519
+
+# Standalone host integration: never publish runtime state or credentials
+community-reference/
+releases/
+integration/*-test.png
+integration/*-test-report.json
+integration/__pycache__/
+node_modules/
+.env
+.env.*
+*.key
+*.pem
+*-balance.json

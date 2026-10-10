@@ -106,3 +106,7 @@ npm --prefix dsh-plugin run release
 感谢 **VKmich16** 提供原版桌宠、美术、音效与行为设计。插件移植自 `大肥鱼桌宠改_D-16BVM`，本仓库仅分发插件所需代码与素材。
 
 插件和随附素材按 [MIT 许可](LICENSE)分发，保留原作者与移植者的版权声明。授权说明见[上游 README](https://github.com/VKmich16/VK-1#readme)及[作者授权回复](https://github.com/VKmich16/VK-1/issues/3)。
+
+## Standalone HTTPS dashboard integration
+
+An independent dashboard overlay (mouse/touch, iframe-safe drag, same-origin balance bridge) is available in [integration/README.md](integration/README.md). The existing DSH plugin stays unchanged.

@@ -39,3 +39,15 @@
 ### Notes
 - 1.0.0/1.0.1 历史清单的宿主入口、widget.js 与补丁文件校验值受换行影响，保留原发布目录，推荐使用 1.0.2。
 - 插件运行逻辑和素材不变，发布至独立的 Release/v1.0.2/。
+
+## Standalone integration v0.1.0 - 2026-10-10
+
+### Added
+- Independent audited dashboard host patches, pinned-source builder and browser/backend tests.
+- Mouse/touch menus, persistent iframe-safe drag, transparent hit testing and lifecycle cleanup.
+- Same-origin ephemeral balance sessions and opt-in sanitized shared-account snapshots.
+- Portable HTTPS deployment/rollback examples and credential-free OpenClaw refresh payload example.
+
+### Notes
+- `dsh-plugin/` remains unchanged at 1.0.2; standalone integration versioning is separate.
+- All generated assets preserve MIT attribution. No deployment credentials/logs are included.
